@@ -36,13 +36,11 @@
             margin-bottom: 30px;
         }
 
-        /* --- STYLE FOR THE LOGOS --- */
         .logos-container {
             max-width: 600px;
             width: 100%;
             margin: 0 auto 25px;
         }
-        /* --- END OF STYLE FOR THE LOGOS --- */
         
         .title {
             font-size: 2.2em;
@@ -123,6 +121,18 @@
             outline: none;
             border-color: #4299e1;
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+        
+        /* --- NEW STYLE FOR WORD SELECTOR --- */
+        .word-selector {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Heebo', sans-serif;
+            background-color: white;
+            cursor: pointer;
         }
         
         .experience-section {
@@ -325,7 +335,7 @@
                 padding: 20px;
             }
             
-            .actions, .logos-container {
+            .actions, .logos-container, .word-selector {
                 display: none;
             }
         }
@@ -334,7 +344,6 @@
 <body>
     <div class="container">
         <div class="header">
-            <!-- --- LOGO ADDED HERE --- -->
             <img src="logos-transparent.png" alt="לוגואים של משרד החינוך, פיסכול חברתי ויסודי עכשיוי" class="logos-container">
             <h1 class="title">דף כתיבה אינטראקטיבי</h1>
             <p class="subtitle">מסכמים ופותחים את הלב - הרפלקציה שלי</p>
@@ -351,10 +360,15 @@
             </div>
         </div>
         
+        <!-- --- START: UPDATED WORD SECTION --- -->
         <div class="word-section">
             <h3>🎯 המילה שבחרתי:</h3>
-            <input type="text" id="chosenWord" class="word-input" placeholder="כתבו כאן את המילה שבחרתם">
+            <input type="text" id="chosenWord" class="word-input" placeholder="כתבו כאן מילה משלכם או בחרו מהרשימה">
+            <select id="wordSelector" class="word-selector">
+                <option value="">-- או בחרו מילה מהרשימה --</option>
+            </select>
         </div>
+        <!-- --- END: UPDATED WORD SECTION --- -->
         
         <div class="experience-section">
             <h3>📖 החוויה או האירוע שהמילה מזכירה לי:</h3>
@@ -422,8 +436,67 @@
     </div>
 
     <script>
-        // הגדרת תאריך נוכחי
-        document.getElementById('date').valueAsDate = new Date();
+        // --- START: NEW WORD DATA AND FUNCTIONS ---
+        const cardData = {
+            experiences: {
+                name: 'חוויות ואירועים',
+                cards: [
+                    'הצלחה', 'אתגר', 'כישלון', 'טיול', 'בית ספר', 'חברות', 'תחרות', 'מבחן',
+                    'פרויקט', 'הופעה', 'ספורט', 'שיעור', 'מסיבה', 'חופש', 'עבודה', 'התנדבות',
+                    'כנס', 'סדנה', 'מחנה', 'יום כיף', 'קבוצה', 'הצגה', 'מקלט', 'תערוכה',
+                    'מפגש', 'יום מיוחד', 'מלחמה', 'ממ"ד', 'הרפתקה', 'גילוי'
+                ]
+            },
+            emotions: {
+                name: 'רגשות ותכונות',
+                cards: [
+                    'שמחה', 'אמפתיה', 'בדידות', 'חמלה', 'יוזמה', 'אחריות', 'גאווה', 'פחד',
+                    'כעס', 'אהבה', 'תקווה', 'אכזבה', 'התרגשות', 'רגיעה', 'עצבות', 'אושר',
+                    'דאגה', 'ביטחון', 'חרדה', 'שלווה', 'מוטיבציה', 'התלהבות', 'נחישות',
+                    'סבלנות', 'אומץ', 'נדיבות', 'צדק', 'יצירתיות', 'חוכמה'
+                ]
+            }
+        };
+
+        function populateWordSelector() {
+            const selector = document.getElementById('wordSelector');
+
+            // Create and append optgroups
+            for (const categoryKey in cardData) {
+                const category = cardData[categoryKey];
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = category.name;
+                
+                category.cards.forEach(word => {
+                    const option = document.createElement('option');
+                    option.value = word;
+                    option.textContent = word;
+                    optgroup.appendChild(option);
+                });
+                
+                selector.appendChild(optgroup);
+            }
+        }
+
+        function setupWordSelection() {
+            const selector = document.getElementById('wordSelector');
+            const input = document.getElementById('chosenWord');
+
+            selector.addEventListener('change', () => {
+                if (selector.value) {
+                    input.value = selector.value;
+                }
+            });
+        }
+        // --- END: NEW WORD DATA AND FUNCTIONS ---
+
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('date').valueAsDate = new Date();
+            populateWordSelector();
+            setupWordSelection();
+        });
         
         // העתקה ללוח
         function saveForm() {
@@ -439,7 +512,6 @@
                 timestamp: new Date().toLocaleString('he-IL')
             };
             
-            // יצירת תוכן לעתיקה
             const content = `דף רפלקציה - מסכמים ופותחים את הלב
 =====================================
 
@@ -464,7 +536,6 @@ ${formData.decision}
 🎯 התנהגות/עשייה:
 ${formData.behavior}`;
             
-            // העתקה ללוח
             navigator.clipboard.writeText(content).then(() => {
                 const saveMessage = document.getElementById('saveMessage');
                 saveMessage.innerHTML = '✅ התוכן הועתק ללוח! אתם יכולים להדביק אותו בכל מקום שתרצו (Ctrl+V)';
@@ -473,12 +544,10 @@ ${formData.behavior}`;
                     saveMessage.style.display = 'none';
                 }, 4000);
             }).catch(() => {
-                // אם לא הצליח - הצגת החלון עם התוכן
                 showContentModal(content);
             });
         }
         
-        // הצגת חלון עם התוכן לעתיקה ידנית
         function showContentModal(content) {
             const modal = document.createElement('div');
             modal.style.cssText = `
@@ -508,88 +577,11 @@ ${formData.behavior}`;
             modal.appendChild(modalContent);
             document.body.appendChild(modal);
             
-            // בחירת כל הטקסט
             const textarea = modalContent.querySelector('textarea');
             textarea.select();
             textarea.focus();
         }
         
-        // הדפסת הטופס
-        function printForm() {
-            // שמירת התוכן המקורי
-            const originalContent = document.body.innerHTML;
-            
-            // יצירת תוכן להדפסה
-            const formData = {
-                studentName: document.getElementById('studentName').value,
-                date: document.getElementById('date').value,
-                chosenWord: document.getElementById('chosenWord').value,
-                experience: document.getElementById('experience').value,
-                emotion: document.getElementById('emotion').value,
-                thought: document.getElementById('thought').value,
-                decision: document.getElementById('decision').value,
-                behavior: document.getElementById('behavior').value
-            };
-            
-            const printContent = `
-                <div style="font-family: 'Heebo', sans-serif; margin: 20px; line-height: 1.6; color: #333;">
-                    <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #4299e1; padding-bottom: 15px;">
-                        <h1 style="font-size: 1.8em; font-weight: 700; color: #2d3748; margin-bottom: 5px;">דף רפלקציה - מסכמים ופותחים את הלב</h1>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: 500;">
-                        <div><strong>שם התלמיד/ה:</strong> ${formData.studentName || '_________________'}</div>
-                        <div><strong>תאריך:</strong> ${formData.date || '_________________'}</div>
-                    </div>
-                    
-                    <div style="background: #e6f3ff; padding: 15px; border-radius: 10px; text-align: center; font-size: 1.3em; font-weight: 600; margin-bottom: 20px; border: 2px solid #4299e1;">
-                        המילה שבחרתי: <strong>${formData.chosenWord || '_________________'}</strong>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 10px; font-size: 1.1em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">📖 החוויה או האירוע שהמילה מזכירה לי:</div>
-                        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; min-height: 60px; border-right: 4px solid #4299e1;">${formData.experience || '<span style="color: #a0aec0; font-style: italic;">לא הוזן תוכן</span>'}</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 10px; font-size: 1.1em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">💭 רגש</div>
-                        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; min-height: 60px; border-right: 4px solid #4299e1;">${formData.emotion || '<span style="color: #a0aec0; font-style: italic;">לא הוזן תוכן</span>'}</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 10px; font-size: 1.1em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">🧠 מחשבה</div>
-                        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; min-height: 60px; border-right: 4px solid #4299e1;">${formData.thought || '<span style="color: #a0aec0; font-style: italic;">לא הוזן תוכן</span>'}</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 10px; font-size: 1.1em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">⚡ החלטה</div>
-                        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; min-height: 60px; border-right: 4px solid #4299e1;">${formData.decision || '<span style="color: #a0aec0; font-style: italic;">לא הוזן תוכן</span>'}</div>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <div style="font-weight: 600; color: #2d3748; margin-bottom: 10px; font-size: 1.1em; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">🎯 התנהגות/עשייה</div>
-                        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; min-height: 60px; border-right: 4px solid #4299e1;">${formData.behavior || '<span style="color: #a0aec0; font-style: italic;">לא הוזן תוכן</span>'}</div>
-                    </div>
-                </div>
-            `;
-            
-            // החלפת התוכן והדפסה
-            document.body.innerHTML = printContent;
-            window.print();
-            
-            // החזרת התוכן המקורי
-            document.body.innerHTML = originalContent;
-            
-            // הוספת מאזין אירועים מחדש לכפתורים
-            addEventListeners();
-        }
-        
-        // הוספת מאזיני אירועים מחדש
-        function addEventListeners() {
-            document.getElementById('date').valueAsDate = new Date();
-        }
-        
-        // ניקוי הטופס
         function clearForm() {
             if (confirm('האם אתם בטוחים שאתם רוצים לנקות את כל הטופס?')) {
                 document.getElementById('studentName').value = '';
@@ -600,6 +592,7 @@ ${formData.behavior}`;
                 document.getElementById('decision').value = '';
                 document.getElementById('behavior').value = '';
                 document.getElementById('date').valueAsDate = new Date();
+                document.getElementById('wordSelector').selectedIndex = 0;
             }
         }
     </script>
