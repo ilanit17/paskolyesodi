@@ -358,6 +358,41 @@
             text-align: center;
         }
         
+        .summary-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-field label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .info-field select {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Heebo', sans-serif;
+            transition: border-color 0.3s ease;
+            width: 100%;
+            background-color: white;
+        }
+        
+        .info-field select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
         .instructions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -985,7 +1020,6 @@
                 align-items: center;
             }
             
-            /* --- RESPONSIVE STYLE FOR CATEGORY SELECTION --- */
             .category-selection {
                 grid-template-columns: 1fr;
             }
@@ -1005,7 +1039,7 @@
                 
                 <div class="activity-description">
                     <div class="timing-info">
-                        קלפי שיח לסיכום (מחצית, שנה, אירוע וכדומה)
+                        קלפי שיח לסיכום (מחצית, שנה, אירוע, חופשה וכדומה)
                     </div>
                     
                     <h3 class="section-title">🎯 כיצד נפעל?</h3>
@@ -1104,7 +1138,7 @@
                         <div class="tip-content">
                             <div class="tip-title">סדר השיתוף</div>
                             <div class="tip-text">
-                                <strong>שלב א':</strong> בחרו מילה ותארו בקצרה את האירוע, החוויה או הזיכרון שהמילה מזכירה לכם.<br>
+                                <strong>שלב א':</strong> בחרו נושא סיכום ומילה, ותארו בקצרה את האירוע או החוויה שהמילה מזכירה לכם.<br>
                                 <strong>שלב ב':</strong> בחרו אחת מנקודות ההתבוננות שהכי מתאימה לסיפור שלכם ושתפו בה. 
                                 העיקר הוא לשתף באופן כן ופתוח!
                             </div>
@@ -1120,6 +1154,19 @@
 
         <div class="instructions" id="mainInstructions">
             <h3>הוראות</h3>
+            <div class="summary-info">
+                <div class="info-field">
+                    <label for="summaryType">מסכמים - בחרו מתוך הרשימה:</label>
+                    <select id="summaryType">
+                        <option value="מחצית">מחצית</option>
+                        <option value="פעילות">פעילות</option>
+                        <option value="אירוע">אירוע</option>
+                        <option value="תקופה">תקופה</option>
+                        <option value="שנה">שנה</option>
+                        <option value="חופשה">חופשה</option>
+                    </select>
+                </div>
+            </div>
             <div class="instructions-grid">
                 <div class="instruction-item">
                     <div class="instruction-number">1.</div>
@@ -1279,7 +1326,7 @@
                     'שמחה', 'אמפתיה', 'בדידות', 'חמלה', 'יוזמה', 'אחריות', 'גאווה', 'פחד',
                     'כעס', 'אהבה', 'תקווה', 'אכזבה', 'התרגשות', 'רגיעה', 'עצבות', 'אושר',
                     'דאגה', 'ביטחון', 'חרדה', 'שלווה', 'מוטיבציה', 'התלהבות', 'נחישות',
-                    'סבלנות', 'אומץ', 'כנות', 'נדיבות', 'צדק', 'יצירתיות', 'חוכמה'
+                    'סבלנות', 'אומץ', 'כן', 'נדיבות', 'צדק', 'יצירתיות', 'חוכמה'
                 ]
             }
         };
