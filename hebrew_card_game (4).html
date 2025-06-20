@@ -56,17 +56,6 @@
             font-weight: 400;
         }
         
-        .summary-note {
-            background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
-            padding: 15px;
-            border-radius: 10px;
-            border-right: 4px solid #4299e1;
-            margin-top: 15px;
-            font-size: 1em;
-            color: #2d3748;
-            font-weight: 500;
-        }
-        
         .explanation-screen {
             background: white;
             border-radius: 20px;
@@ -986,6 +975,20 @@
                 padding: 15px;
                 margin-top: 15px;
             }
+            
+            .instructions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .instructions-aspects ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            /* --- RESPONSIVE STYLE FOR CATEGORY SELECTION --- */
+            .category-selection {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1101,7 +1104,7 @@
                         <div class="tip-content">
                             <div class="tip-title">סדר השיתוף</div>
                             <div class="tip-text">
-                                <strong>שלב א':</strong> תארו בקצרה את האירוע, החוויה או הזיכרון שהמילה מזכירה לכם.<br>
+                                <strong>שלב א':</strong> בחרו מילה ותארו בקצרה את האירוע, החוויה או הזיכרון שהמילה מזכירה לכם.<br>
                                 <strong>שלב ב':</strong> בחרו אחת מנקודות ההתבוננות שהכי מתאימה לסיפור שלכם ושתפו בה. 
                                 העיקר הוא לשתף באופן כן ופתוח!
                             </div>
@@ -1187,7 +1190,7 @@
                 </div>
 
                 <div class="reflection-instruction">
-                    ספרו בקצרה על החוויה או האירוע שמזכירה לכם המילה שבחרתם, לחצו על אחד או יותר מארבעת ההיבטים הבאים שעליהם השפיעה החוויה, והתייחסו לשאלות בכרטיס
+                    ספרו בקצרה על החוויה או האירוע שמזכירה לכם המילה שבחרתם, לחצו על אחד או יותר מארבעת ההיבטים הבאים שעליהם השפיעה החוויה והתייחסו לשאלות בכרטיס.
                 </div>
                 
                 <div class="aspects-grid">
@@ -1259,14 +1262,14 @@
     </div>
 
     <script>
-        // Data for the different categories (now only used for card selection)
+        // Data for the different categories
         const cardData = {
             experiences: {
                 name: 'חוויות ואירועים',
                 cards: [
                     'הצלחה', 'אתגר', 'כישלון', 'טיול', 'בית ספר', 'חברות', 'תחרות', 'מבחן',
-                    'פרויקט', 'הופעה', 'ספורט', 'שיעור', 'מסיבה', 'חופש', 'ממ"ד', 'התנדבות',
-                    'כנס', 'סדנה', 'מחנה', 'יום כיף', 'קבוצה', 'הצגה', 'קונצרט', 'תערוכה',
+                    'פרויקט', 'הופעה', 'ספורט', 'שיעור', 'מסיבה',  'חופש', 'עבודה', 'התנדבות',
+                    'ממ"ד', 'סדנה', 'מחנה', 'יום כיף', 'קבוצה', 'אזעקה', 'הצגה',  'למידה מרחוק', 'קונצרט', 'תערוכה',
                     'מפגש', 'יום מיוחד', 'מלחמה', 'חוויה', 'הרפתקה', 'גילוי'
                 ]
             },
@@ -1276,7 +1279,7 @@
                     'שמחה', 'אמפתיה', 'בדידות', 'חמלה', 'יוזמה', 'אחריות', 'גאווה', 'פחד',
                     'כעס', 'אהבה', 'תקווה', 'אכזבה', 'התרגשות', 'רגיעה', 'עצבות', 'אושר',
                     'דאגה', 'ביטחון', 'חרדה', 'שלווה', 'מוטיבציה', 'התלהבות', 'נחישות',
-                    'סבלנות', 'אומץ', 'כן', 'נדיבות', 'צדק', 'יצירתיות', 'חוכמה'
+                    'סבלנות', 'אומץ', 'כנות', 'נדיבות', 'צדק', 'יצירתיות', 'חוכמה'
                 ]
             }
         };
