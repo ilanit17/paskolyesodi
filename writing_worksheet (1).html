@@ -123,7 +123,6 @@
             box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
         }
         
-        /* --- NEW STYLE FOR WORD SELECTOR --- */
         .word-selector {
             width: 100%;
             padding: 12px;
@@ -133,6 +132,7 @@
             font-family: 'Heebo', sans-serif;
             background-color: white;
             cursor: pointer;
+            text-overflow: ellipsis; 
         }
         
         .experience-section {
@@ -321,6 +321,17 @@
                 width: 100%;
                 max-width: 200px;
             }
+
+            .word-section h3, .experience-section h3 {
+                font-size: 1.1em;
+                flex-wrap: wrap; 
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .word-input::placeholder {
+                font-size: 0.9em;
+            }
         }
         
         @media print {
@@ -335,7 +346,7 @@
                 padding: 20px;
             }
             
-            .actions, .logos-container, .word-selector {
+            .actions, .logos-container, .word-selector, .note {
                 display: none;
             }
         }
@@ -345,8 +356,8 @@
     <div class="container">
         <div class="header">
             <img src="logos-transparent.png" alt="לוגואים של משרד החינוך, פיסכול חברתי ויסודי עכשיוי" class="logos-container">
-            <h1 class="title">דף כתיבה אינטראקטיבי</h1>
-            <p class="subtitle">מסכמים ופותחים את הלב - הרפלקציה שלי</p>
+            <h1 class="title">מסכמים ופותחים את הלב</h1>
+            <p class="subtitle">הסיכום האישי שלי</p>
         </div>
         
         <div class="student-info">
@@ -360,15 +371,13 @@
             </div>
         </div>
         
-        <!-- --- START: UPDATED WORD SECTION --- -->
         <div class="word-section">
             <h3>🎯 המילה שבחרתי:</h3>
-            <input type="text" id="chosenWord" class="word-input" placeholder="כתבו כאן מילה משלכם או בחרו מהרשימה">
+            <input type="text" id="chosenWord" class="word-input" placeholder="כתבו מילה משלכם">
             <select id="wordSelector" class="word-selector">
-                <option value="">-- או בחרו מילה מהרשימה --</option>
+                <option value="">-- או: בחרו מהרשימה --</option>
             </select>
         </div>
-        <!-- --- END: UPDATED WORD SECTION --- -->
         
         <div class="experience-section">
             <h3>📖 החוויה או האירוע שהמילה מזכירה לי:</h3>
@@ -423,11 +432,12 @@
         
         <div class="actions">
             <button class="btn btn-primary" onclick="saveForm()">📋 העתקה ללוח</button>
+            <button class="btn btn-secondary" onclick="printPage()">🖨️ הדפסת הטופס</button>
             <button class="btn btn-danger" onclick="clearForm()">🗑️ ניקוי הטופס</button>
         </div>
         
         <div class="note" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 10px; padding: 15px; margin-top: 20px; text-align: center; color: #856404;">
-            💡 <strong>טיפ:</strong> לאחר העתקה ללוח, תוכלו להדביק את התוכן במסמך Word כדי לשמור, להדפיס ולשתף במידת הצורך
+            💡 <strong>טיפ:</strong> לאחר העתקה ללוח, תוכלו להדביק את התוכן במסמך Word כדי לשמור ולשתף במידת הצורך.
         </div>
         
         <div id="saveMessage" class="save-message">
@@ -436,7 +446,6 @@
     </div>
 
     <script>
-        // --- START: NEW WORD DATA AND FUNCTIONS ---
         const cardData = {
             experiences: {
                 name: 'חוויות ואירועים',
@@ -461,7 +470,6 @@
         function populateWordSelector() {
             const selector = document.getElementById('wordSelector');
 
-            // Create and append optgroups
             for (const categoryKey in cardData) {
                 const category = cardData[categoryKey];
                 const optgroup = document.createElement('optgroup');
@@ -488,17 +496,13 @@
                 }
             });
         }
-        // --- END: NEW WORD DATA AND FUNCTIONS ---
 
-
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('date').valueAsDate = new Date();
             populateWordSelector();
             setupWordSelection();
         });
         
-        // העתקה ללוח
         function saveForm() {
             const formData = {
                 studentName: document.getElementById('studentName').value,
@@ -580,6 +584,10 @@ ${formData.behavior}`;
             const textarea = modalContent.querySelector('textarea');
             textarea.select();
             textarea.focus();
+        }
+        
+        function printPage() {
+            window.print();
         }
         
         function clearForm() {
